@@ -139,7 +139,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double
 {
-    val a = initial * 1.0 + (percent/ 100.0) * (1.0 + (percent / 100.0)) * (1.0 + (percent / 100.0)) ;
+    val a = initial *( 1.0 + (percent / 100.0)) * (1.0 + (percent / 100.0)) * (1.0 + (percent / 100.0));
     return a;
 }
 
@@ -149,4 +149,8 @@ fun accountInThreeYears(initial: Int, percent: Int): Double
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int = TODO()
+fun numberRevert(number: Int): Int
+{
+    val num = (number % 10 ) * 100 + ((number / 10 ) % 10) * 10 + (number / 100);
+     return num;
+}
