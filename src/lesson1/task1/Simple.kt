@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson1.task1
 
+import java.lang.Math.pow
 import kotlin.math.*
 
 /**
@@ -119,7 +120,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double =
-        initial * (1.0 + (percent / 100.0)) * (1.0 + (percent / 100.0)) * (1.0 + (percent / 100.0))
+        initial * pow(1.0 + (percent / 100.0), 3.0)
 
 /**
  * Простая
