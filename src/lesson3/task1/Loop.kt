@@ -97,7 +97,6 @@ fun fib(n: Int): Int {
     }
     return y
 }
-
 /**
  * Простая
  *
@@ -105,24 +104,23 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var kiss = m
-    var app = n
-    val andr = m * n
-    while (kiss != app) {
-        if (kiss > app) kiss -= app else app -= kiss
+    var x = m
+    var a = n
+    val y = m * n
+    while (x != a) {
+        if (x > a) x -= a else a -= x
     }
-return andr / kiss
+return y / x
 }
-
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var midoria = 2
-    if (isPrime(n)) return n else while (n % midoria != 0) midoria++
-    return midoria
+    var m = 2
+    if (isPrime(n)) return n else while (n % m != 0) m++
+    return m
 }
 /**
  * Простая
@@ -139,15 +137,14 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var kiss = n
-    var app = m
-    while ((app != 0) && (kiss != 0)) {
-        if (app > kiss) app %= kiss else kiss %= app
+    var k = n
+    var a = m
+    while ((a != 0) && (k != 0)) {
+        if (a > k) a %= k else k %= a
     }
-    app += kiss
-    return app == 1
+    a += k
+    return a == 1
 }
-
 /**
  * Простая
  *
@@ -160,7 +157,6 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
     while ((x * x) < m && x < sqrt(Int.MAX_VALUE.toDouble())) x++
     return (x * x) in m..n
 }
-
 /**
  * Средняя
  *
@@ -178,15 +174,14 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * этого для какого-либо начального X > 0.
  */
 fun collatzSteps(x: Int): Int {
-    var naruto = 0
-    var boruto = x
-    while (boruto > 1) {
-        if (boruto % 2 == 0) boruto /= 2 else boruto = boruto * 3 + 1
-        naruto++
+    var n = 0
+    var b = x
+    while (b > 1) {
+        if (b % 2 == 0) b /= 2 else b = b * 3 + 1
+        n++
     }
-    return naruto
+    return n
 }
-
 /**
  * Средняя
  *
@@ -196,19 +191,18 @@ fun collatzSteps(x: Int): Int {
  */
 fun sin(x: Double, eps: Double): Double {
     val iks = x % (2 * PI)
-    var art = iks
-    var num = iks
+    var a = iks
+    var n = iks
     var i = 1.0
     while (true) {
-        num = -num * sqr(iks) / (i + 1) / (i + 2)
-        if (Math.abs(num) < eps)
+        n = -n * sqr(iks) / (i + 1) / (i + 2)
+        if (Math.abs(n) < eps)
             break
-        art += num
+        a += n
         i += 2
     }
-    return art
+    return a
 }
-
 /**
  * Средняя
  *
@@ -218,19 +212,18 @@ fun sin(x: Double, eps: Double): Double {
  */
 fun cos(x: Double, eps: Double): Double {
     val iks = x % (2 * PI)
-    var art = 1.0
+    var a = 1.0
     var num = 1.0
     var i = 0.0
     while (true) {
         num = -num * sqr(iks) / (i + 1) / (i + 2)
         if (Math.abs(num) < eps)
             break
-        art += num
+        a += num
         i += 2
     }
-return art
+return a
 }
-
 /**
  * Средняя
  *
@@ -247,7 +240,6 @@ fun revert(n: Int): Int {
     }
     return iks
 }
-
 /**
  * Средняя
  *
@@ -277,7 +269,6 @@ fun hasDifferentDigits(n: Int): Boolean {
     }
     return false
 }
-
 /**
  * Сложная
  *
