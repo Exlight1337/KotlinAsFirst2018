@@ -18,6 +18,7 @@ fun factorial(n: Int): Double {
     return result
 }
 
+
 /**
  * Пример
  *
@@ -32,6 +33,7 @@ fun isPrime(n: Int): Boolean {
     }
     return true
 }
+
 
 /**
  * Пример
@@ -48,6 +50,7 @@ fun isPerfect(n: Int): Boolean {
     return sum == n
 }
 
+
 /**
  * Пример
  *
@@ -59,6 +62,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
             n < 10 -> 0
             else -> digitCountInNumber(n / 10, m) + digitCountInNumber(n % 10, m)
         }
+
 
 /**
  * Тривиальная
@@ -81,6 +85,7 @@ fun digitNumber(n: Int): Int {
     return i
 }
 
+
 /**
  * Простая
  *
@@ -97,6 +102,8 @@ fun fib(n: Int): Int {
     }
     return y
 }
+
+
 /**
  * Простая
  *
@@ -112,6 +119,8 @@ fun lcm(m: Int, n: Int): Int {
     }
 return y / x
 }
+
+
 /**
  * Простая
  *
@@ -122,6 +131,8 @@ fun minDivisor(n: Int): Int {
     if (isPrime(n)) return n else while (n % m != 0) m++
     return m
 }
+
+
 /**
  * Простая
  *
@@ -145,6 +156,8 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     a += k
     return a == 1
 }
+
+
 /**
  * Простая
  *
@@ -157,6 +170,8 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
     while ((x * x) < m && x < sqrt(Int.MAX_VALUE.toDouble())) x++
     return (x * x) in m..n
 }
+
+
 /**
  * Средняя
  *
@@ -182,6 +197,8 @@ fun collatzSteps(x: Int): Int {
     }
     return n
 }
+
+
 /**
  * Средняя
  *
@@ -203,6 +220,8 @@ fun sin(x: Double, eps: Double): Double {
     }
     return a
 }
+
+
 /**
  * Средняя
  *
@@ -224,6 +243,8 @@ fun cos(x: Double, eps: Double): Double {
     }
 return a
 }
+
+
 /**
  * Средняя
  *
@@ -240,6 +261,8 @@ fun revert(n: Int): Int {
     }
     return iks
 }
+
+
 /**
  * Средняя
  *
@@ -269,6 +292,8 @@ fun hasDifferentDigits(n: Int): Boolean {
     }
     return false
 }
+
+
 /**
  * Сложная
  *
@@ -278,7 +303,18 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var x = 1
+    var k = 0
+    var y = 1
+    while (k < n) {
+        x = sqr(y)
+        k += digitNumber(x)
+        y++
+    }
+return findNumb(n, k, x)
+}
+
 
 /**
  * Сложная
@@ -289,4 +325,22 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var x = 1
+    var k = 0
+    var y = 1
+    while (k < n) {
+        x = fib(y)
+        k += digitNumber(x)
+        y++
+    }
+    return findNumb(n, k, x)
+}
+
+fun findNumb(n: Int, k: Int, x: Int): Int {
+    var x1 = x
+    for (i in 1..(k - n)){
+        x1 /= 10
+    }
+    return x1 % 10
+}
