@@ -214,7 +214,7 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
@@ -223,7 +223,17 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    val x = mutableListOf<Int>()
+    var y = n
+    if (y == 0) x.add(0)
+    else
+        while (y >= 1) {
+            x.add(0, y % base)
+            y /= base
+        }
+    return x
+}
 
 /**
  * Сложная
@@ -233,7 +243,23 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * строчными буквами: 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    var x: Int
+    var y = n
+    var end = mutableListOf<String>()
+    val u: List<String> = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f",
+            "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
+    if (y == 0) end.add("0")
+    else {
+        while (y > 0) {
+            x = y % base
+            end.add(u[x])
+            y /= base
+        }
+    }
+    end = end.reversed().toMutableList()
+    return end.joinToString(separator = "")
+}
 
 /**
  * Средняя
@@ -242,7 +268,8 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int =
+        polynom(digits.map { it.toDouble() }.reversed(), base.toDouble()).toInt()
 
 /**
  * Сложная
@@ -253,7 +280,17 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    var x = 0
+    var y = 1
+    str.reversed().forEach {
+        val n = if (it <= '9') it - '0'
+        else (it.toLowerCase() - 'a' + 10)
+        x += y * n
+        y *= base
+    }
+    return x
+}
 
 /**
  * Сложная
@@ -263,7 +300,22 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var y = mutableListOf<String>()
+    var m = n
+    val o: List<String> = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    val a: List<Int> = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    for (i in 0 until a.size) {
+        if (m - a[i] >= 0) {
+            while (m - a[i] >= 0) {
+                y.add(o[i])
+                m -= a[i]
+            }
+        }
+    }
+    y = y.toMutableList()
+    return y.joinToString(separator = "")
+}
 
 /**
  * Очень сложная

@@ -3,6 +3,8 @@ package lesson3.task1
 
 import lesson1.task1.sqr
 import kotlin.math.PI
+import kotlin.math.ceil
+import kotlin.math.floor
 import kotlin.math.sqrt
 
 /**
@@ -117,7 +119,7 @@ fun lcm(m: Int, n: Int): Int {
     while (x != a) {
         if (x > a) x -= a else a -= x
     }
-return y / x
+    return y / x
 }
 
 
@@ -165,11 +167,8 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var x = 0
-    while ((x * x) < m && x < sqrt(Int.MAX_VALUE.toDouble())) x++
-    return (x * x) in m..n
-}
+fun squareBetweenExists(m: Int, n: Int): Boolean =
+        (ceil(Math.sqrt(m.toDouble()))) <= floor(Math.sqrt(n.toDouble()))
 
 
 /**
@@ -241,7 +240,7 @@ fun cos(x: Double, eps: Double): Double {
         a += num
         i += 2
     }
-return a
+    return a
 }
 
 
@@ -312,7 +311,7 @@ fun squareSequenceDigit(n: Int): Int {
         k += digitNumber(x)
         y++
     }
-return findNumb(n, k, x)
+    return findNumb(n, k, x)
 }
 
 
@@ -339,7 +338,7 @@ fun fibSequenceDigit(n: Int): Int {
 
 fun findNumb(n: Int, k: Int, x: Int): Int {
     var x1 = x
-    for (i in 1..(k - n)){
+    for (i in 1..(k - n)) {
         x1 /= 10
     }
     return x1 % 10
