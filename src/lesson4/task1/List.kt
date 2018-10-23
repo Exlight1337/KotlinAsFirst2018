@@ -345,7 +345,7 @@ fun russian(n: Int): String {
 enum class Gender {
     F, M, N
 }
-fun topFunEver(n: Int, xgen: Gender): String {
+fun topFunEver(n: Int, xgenx: Gender): String {
     if (n !in 0..999) {
         throw IllegalAccessException("n принимает значение от 0 до 999")
     }
@@ -392,9 +392,9 @@ fun topFunEver(n: Int, xgen: Gender): String {
             else -> ""
         })
         res.add(if (fd in 1..2) {
-            if (xgen == Gender.M) {
+            if (xgenx == Gender.M) {
                 if (fd == 1) "один" else "два"
-            } else if (xgen == Gender.F) {
+            } else if (xgenx == Gender.F) {
                 if (fd == 1) "одна" else "две"
             } else if (fd == 1) "одно" else "два"
         } else {
