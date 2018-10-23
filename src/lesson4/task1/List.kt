@@ -324,4 +324,91 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val l = mutableListOf<String>()
+    if (n / 1000 != 0) {
+        l.add(topFunEver(n / 1000, Gender.F))
+        l.add(if (n / 1000 % 100 !in 10..19) {
+            when (n / 1000 % 10) {
+                0 -> "тысяч"
+                1 -> "тысяча"
+                in 2..4 -> "тысячи"
+                else -> "тысяч"
+            }
+        } else {
+            "тысяч"
+        })
+    }
+    l.add(topFunEver(n % 1000, Gender.M))
+    return l.joinToString(separator = " ").trim()
+}
+enum class Gender {
+    F, M, N
+}
+fun topFunEver(n: Int, xgen: Gender): String {
+    if (n !in 0..999) {
+        throw IllegalAccessException("n принимает значение от 0 до 999")
+    }
+    val res = mutableListOf<String>()
+    val fd = n % 10
+    val sd = n / 10 % 10
+    val td = n / 100
+    res.add(
+            when (td) {
+                1 -> "сто"
+                2 -> "двести"
+                3 -> "триста"
+                4 -> "четыреста"
+                5 -> "пятьсот"
+                6 -> "шестьсот"
+                7 -> "семьсот"
+                8 -> "восемьсот"
+                9 -> "девятьсот"
+                else -> ""
+            })
+    if (n % 100 in 10..19) {
+        res.add(when (n % 100) {
+            10 -> "десять"
+            11 -> "одиннадцать"
+            12 -> "двенадцать"
+            13 -> "тринадцать"
+            14 -> "четырнадцать"
+            15 -> "пятнадцать"
+            16 -> "шестнадцать"
+            17 -> "семнадцать"
+            18 -> "восемнадцать"
+            else -> "девятнадцать"
+        })
+    } else {
+        res.add(when (sd) {
+            2 -> "двадцать"
+            3 -> "тридцать"
+            4 -> "сорок"
+            5 -> "пятьдесят"
+            6 -> "шестьдесят"
+            7 -> "семьдесят"
+            8 -> "восемьдесят"
+            9 -> "девяносто"
+            else -> ""
+        })
+        res.add(if (fd in 1..2) {
+            if (xgen == Gender.M) {
+                if (fd == 1) "один" else "два"
+            } else if (xgen == Gender.F) {
+                if (fd == 1) "одна" else "две"
+            } else if (fd == 1) "одно" else "два"
+        } else {
+            when (fd) {
+                3 -> "три"
+                4 -> "четыре"
+                5 -> "пять"
+                6 -> "шесть"
+                7 -> "семь"
+                8 -> "восемь"
+                9 -> "девять"
+                else -> ""
+            }
+        })
+    }
+    return res.filter { it != "" }.joinToString(separator = " ")
+}
