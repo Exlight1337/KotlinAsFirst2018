@@ -116,7 +116,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = sqrt(v.map {it * it}. sum())
+fun abs(v: List<Double>): Double = sqrt(v.map { it * it }.sum())
 
 /**
  * Простая
@@ -135,9 +135,7 @@ fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.sum() /
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
     val y = mean(list)
-    for (i in 0 until list.size){
-        list[i] -= y
-    }
+    list.replaceAll { it - y }
     return list
 }
 
@@ -149,7 +147,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
 fun times(a: List<Double>, b: List<Double>): Double =
-        (a zip b).fold(0.0) { previousResult, element -> previousResult + element.first * element.second }
+        a.zip(b).sumByDouble { it.first * it.second }
 
 /**
  * Средняя
@@ -161,12 +159,12 @@ fun times(a: List<Double>, b: List<Double>): Double =
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var g = 1.0
-    var END = 0.0
+    var end = 0.0
     p.forEach{
-        END += it * g
+        end += it * g
         g *= x
     }
-    return END
+    return end
 }
 
 /**
@@ -188,6 +186,7 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
     }
     return list
 }
+
 
 /**
  * Средняя
