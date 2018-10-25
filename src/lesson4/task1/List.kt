@@ -4,6 +4,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson3.task1.minDivisor
+import java.lang.Math.pow
 import kotlin.math.sqrt
 
 /**
@@ -157,15 +158,9 @@ fun times(a: List<Double>, b: List<Double>): Double =
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0.0 при любом x.
  */
-fun polynom(p: List<Double>, x: Double): Double {
-    var g = 1.0
-    var e = 0.0
-    p.forEach{
-        e += it * g
-        g *= x
-    }
-    return e
-}
+fun polynom(p: List<Double>, x: Double): Double =
+        if (p.isNotEmpty()) p.mapIndexed { index, el -> el * pow(x, index.toDouble()) }.sum() else 0.0
+
 
 /**
  * Средняя
