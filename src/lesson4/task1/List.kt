@@ -159,12 +159,12 @@ fun times(a: List<Double>, b: List<Double>): Double =
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var g = 1.0
-    var end = 0.0
+    var e = 0.0
     p.forEach{
-        end += it * g
+        e += it * g
         g *= x
     }
-    return end
+    return e
 }
 
 /**
@@ -240,21 +240,16 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    var x: Int
-    var y = n
-    var end = mutableListOf<String>()
-    val u: List<String> = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f",
-            "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
-    if (y == 0) end.add("0")
-    else {
-        while (y > 0) {
-            x = y % base
-            end.add(u[x])
-            y /= base
+    var result = ""
+    var z = n
+    if (n == 0) return "0"
+    else
+        while (z > 0) {
+            val a = z % base
+            result += if (a < 10) a.toString() else ('a' + (a - 10))
+            z /= base
         }
-    }
-    end = end.reversed().toMutableList()
-    return end.joinToString(separator = "")
+    return result.reversed()
 }
 
 /**
@@ -276,17 +271,7 @@ fun decimal(digits: List<Int>, base: Int): Int =
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int {
-    var x = 0
-    var y = 1
-    str.reversed().forEach {
-        val n = if (it <= '9') it - '0'
-        else (it.toLowerCase() - 'a' + 10)
-        x += y * n
-        y *= base
-    }
-    return x
-}
+fun decimalFromString(str: String, base: Int): Int = str.toInt(base)
 
 /**
  * Сложная
