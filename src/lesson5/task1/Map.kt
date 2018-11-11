@@ -94,7 +94,9 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> =
+        (mapA.entries + mapB.entries).groupBy { it.key }
+                .mapValues { (_, value) -> value.joinToString(", ") { it.value } }
 
 /**
  * Простая
@@ -106,7 +108,12 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> =
+        grades.entries.map { it.key }.groupBy { grades[it]!! }.mapValues { (_, grade) ->
+            grade.sortedDescending()
+        }.toSortedMap(compareBy { -it })
+
+
 
 /**
  * Простая
@@ -118,7 +125,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = a.all { it.value == b[it.key] }
 
 /**
  * Средняя
@@ -130,8 +137,16 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
-
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val zip = mutableMapOf<String, Double>()
+    val vah = mutableMapOf<String, Int>()
+    for ((s, d) in stockPrices) {
+        vah[s] = (vah[s] ?: 0) + 1
+        zip[s] = (zip[s] ?: 0.0) + d
+    }
+    for ((s) in zip) zip[s] = zip[s]!! / vah[s]!!
+    return zip
+}
 /**
  * Средняя
  *
@@ -147,7 +162,9 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? =
+        stuff.filter { (_, shmot) -> shmot.first == kind }
+                .minBy { (_, shmot) -> shmot.second }?.component1()
 
 /**
  * Сложная
