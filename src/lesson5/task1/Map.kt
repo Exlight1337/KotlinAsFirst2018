@@ -140,13 +140,11 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = a.all 
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val zip = mutableMapOf<String, Double>()
     val vah = mutableMapOf<String, Int>()
-    for ((s, d) in stockPrices) {
-        vah[s] = (vah[s] ?: 0) + 1
-        zip[s] = (zip[s] ?: 0.0) + d
-    }
-    for ((s) in zip) zip[s] = zip[s]!! / vah[s]!!
+    for ((s, _) in stockPrices) vah[s] = vah.getOrPut(s) { 0 } + 1
+    for ((s, value) in stockPrices) zip[s] = zip.getOrPut(s) { 0.0 } + value / vah[s]!!
     return zip
 }
+
 /**
  * Средняя
  *
@@ -190,7 +188,33 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+    val ruka = mutableMapOf<String, Set<String>>()
+    friends.forEach { key, value ->
+        if (key !in ruka)
+            ruka[key] = TopRukaStyle(key, friends).toSortedSet()
+        value.forEach {
+            if (it !in ruka)
+                ruka[it] = TopRukaStyle(it, friends).toSortedSet()
+        }
+    }
+
+    return ruka
+}
+fun <T> TopRukaStyle(start: T, graph: Map<T, Set<T>>): Set<T> {
+    val c = mutableMapOf(start to true)
+    val s = mutableSetOf(start)
+    while (s.size > 0) {
+        val last = s.last()
+        c[last] = true
+        s.remove(last)
+        graph[last]?.forEach {
+            if (it !in c)
+                s.add(it)
+        }
+    }
+    return c.keys - start
+}
 
 /**
  * Простая
@@ -206,14 +230,14 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) = a.keys.removeIf { b[it] == a[it] }
 
 /**
  * Простая
  *
  * Для двух списков людей найти людей, встречающихся в обоих списках
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = (a.toMutableSet().intersect(b.toMutableSet())).toList()
 
 /**
  * Средняя
@@ -224,7 +248,14 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    for (i in word) {
+        if (i !in chars) {
+            return false
+        }
+    }
+    return true
+}
 
 /**
  * Средняя
@@ -238,7 +269,13 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+val kus = mutableMapOf<String, Int>()
+for (alarme in list) {
+    kus[alarme] = (kus[alarme] ?: 0) + 1
+}
+return kus.filter { it.value != 1 }
+}
 
 /**
  * Средняя
@@ -249,7 +286,8 @@ fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun hasAnagrams(words: List<String>): Boolean =
+        if (words.isEmpty()) false else words.size != words.map { it.toList().sorted() }.toSet().size
 
 /**
  * Сложная
@@ -268,7 +306,11 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    for (i in 0 until list.size)
+        if (number - list[i] in list && i != list.indexOf(number - list[i])) return i to list.indexOf(number - list[i])
+    return -1 to -1
+}
 
 /**
  * Очень сложная
