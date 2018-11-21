@@ -2,6 +2,9 @@
 
 package lesson5.task1
 
+import kotlinx.html.ButtonFormMethod
+import kotlinx.html.P
+
 /**
  * Пример
  *
@@ -111,7 +114,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> =
         grades.entries.map { it.key }.groupBy { grades[it]!! }.mapValues { (_, grade) ->
             grade.sortedDescending()
-        }.toSortedMap(compareBy { -it })
+        }.toSortedMap(compareBy { -it } )
 
 
 
@@ -192,16 +195,16 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
     val ruka = mutableMapOf<String, Set<String>>()
     friends.forEach { key, value ->
         if (key !in ruka)
-            ruka[key] = TopRukaStyle(key, friends).toSortedSet()
+            ruka[key] = Toprukastyle(key, friends).toSortedSet()
         value.forEach {
             if (it !in ruka)
-                ruka[it] = TopRukaStyle(it, friends).toSortedSet()
+                ruka[it] = Toprukastyle(it, friends).toSortedSet()
         }
     }
 
     return ruka
 }
-fun <T> TopRukaStyle(start: T, graph: Map<T, Set<T>>): Set<T> {
+fun <E> Toprukastyle(start: E, graph: Map<E, Set<E>>): Set<E> {
     val c = mutableMapOf(start to true)
     val s = mutableSetOf(start)
     while (s.size > 0) {
@@ -271,9 +274,9 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
 val kus = mutableMapOf<String, Int>()
-for (alarme in list) {
-    kus[alarme] = (kus[alarme] ?: 0) + 1
-}
+    for (alarme in list) {
+        kus[alarme] = (kus[alarme] ?: 0) + 1
+    }
 return kus.filter { it.value != 1 }
 }
 
@@ -331,4 +334,4 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO() 
