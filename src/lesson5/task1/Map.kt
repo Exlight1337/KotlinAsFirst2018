@@ -195,16 +195,16 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
     val ruka = mutableMapOf<String, Set<String>>()
     friends.forEach { key, value ->
         if (key !in ruka)
-            ruka[key] = TopRukaStyle    (key, friends).toSortedSet()
+            ruka[key] = topHandStyle    (key, friends).toSortedSet()
         value.forEach {
             if (it !in ruka)
-                ruka[it] = TopRukaStyle(it, friends).toSortedSet()
+                ruka[it] = topHandStyle(it, friends).toSortedSet()
         }
     }
 
     return ruka
 }
-fun <E> TopRukaStyle(start: E, graph: Map<E, Set<E>>): Set<E> {
+fun <E> topHandStyle(start: E, graph: Map<E, Set<E>>): Set<E> {
     val c = mutableMapOf(start to true)
     val s = mutableSetOf(start)
     while (s.size > 0) {
