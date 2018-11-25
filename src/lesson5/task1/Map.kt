@@ -195,16 +195,16 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
     val ruka = mutableMapOf<String, Set<String>>()
     friends.forEach { key, value ->
         if (key !in ruka)
-            ruka[key] = Toprukastyle(key, friends).toSortedSet()
+            ruka[key] = TopRukaStyle    (key, friends).toSortedSet()
         value.forEach {
             if (it !in ruka)
-                ruka[it] = Toprukastyle(it, friends).toSortedSet()
+                ruka[it] = TopRukaStyle(it, friends).toSortedSet()
         }
     }
 
     return ruka
 }
-fun <E> Toprukastyle(start: E, graph: Map<E, Set<E>>): Set<E> {
+fun <E> TopRukaStyle(start: E, graph: Map<E, Set<E>>): Set<E> {
     val c = mutableMapOf(start to true)
     val s = mutableSetOf(start)
     while (s.size > 0) {
@@ -273,11 +273,11 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
-val kus = mutableMapOf<String, Int>()
+    val kus = mutableMapOf<String, Int>()
     for (alarme in list) {
         kus[alarme] = (kus[alarme] ?: 0) + 1
     }
-return kus.filter { it.value != 1 }
+    return kus.filter { it.value != 1 }
 }
 
 /**

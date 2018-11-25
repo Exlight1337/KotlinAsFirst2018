@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 /**
  * Пример
  *
@@ -49,12 +51,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -107,7 +107,6 @@ fun flattenPhoneNumber(phone: String): String {
     }
 }
 
-
 /**
  * Средняя
  *
@@ -118,7 +117,16 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int = if (Regex("""([\s\-%\d])+""").matches(jumps)) {
+    val jm = jumps.replace(Regex("""[%\-]"""), "").replace(Regex("""\s+"""), " ")
+    jm.split(" ").map {
+        try {
+            it.toInt()
+        } catch (e: Exception) {
+            -1
+        }
+    }.max()!!
+} else -1
 
 /**
  * Сложная
@@ -130,7 +138,16 @@ fun bestLongJump(jumps: String): Int = TODO()
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    return try {
+        val jm = Regex("""\d+ \+""").findAll(jumps.replace(Regex("[-%]+"), ""))
+                .map { Regex("""\d+""").find(it.value)!!.value.toInt() }
+                .max()
+        jm!!
+    } catch (e: Exception) {
+        -1
+    }
+}
 
 /**
  * Сложная
@@ -167,21 +184,22 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  */
 fun mostExpensive(description: String): String {
     val br = description.split("; ")
-    var kun = 0.0
-    var cen = ""
+    var ku = 0.0
+    var cena = ""
     for (i in br) {
-        var bh = i.split(" ")
+        val bh = i.split(" ")
         try {
-            if (bh[1].toDouble() >= kun) {
-                kun = bh[1].toDouble()
-                cen = bh[0]
+            if (bh[1].toDouble() >= ku) {
+                ku = bh[1].toDouble()
+                cena = bh[0]
             }
         } catch (e: IndexOutOfBoundsException) {
             return ""
         }
     }
-    return cen
+    return cena
 }
+
 /**
  * Сложная
  *
