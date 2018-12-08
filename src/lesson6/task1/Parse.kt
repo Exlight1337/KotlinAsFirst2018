@@ -3,6 +3,8 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import javax.xml.datatype.DatatypeConstants.MONTHS
+
 
 /**
  * Пример
@@ -71,7 +73,17 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val format = Regex("""^([0-9]{1,2})\s([а-я]+)\s([0-9]+)$""")
+    if (!str.matches(format)) return ""
+    val date = str.split(" ")
+    val mnf = arrayOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+            "августа", "сентября", "октября", "ноября", "декабря")
+    val res = listOf(date[0].toInt(), mnf.indexOf(date[1]) + 1, date[2])
+    val maxMnf = daysInMonth(mnf.indexOf(date[1]) + 1, date[2].toInt())
+    if ((res[0] == maxMnf) || (res[1] != mnf)) return ""
+    return String.format("%02d.%02d.%d", res[0], res[1], res[2])
+}
 
 /**
  * Средняя
@@ -83,7 +95,16 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val format = Regex("""^([0-9]{2}).([0-9]{2}).([0-9]+)$""")
+    if (!digital.matches(format)) return "" // соответствие формату
+    val parts = digital.split(".")
+    val months = arrayOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+            "августа", "сентября", "октября", "ноября", "декабря")
+    if (parts[0].toInt() > 31 || parts[1].toInt() !in 1..12) return "" // некоррекное число || месяц
+    val res = listOf(parts[0].toInt().toString(), months[parts[1].toInt() - 1], parts[2])
+    return res.joinToString(separator = " ")
+}
 
 /**
  * Средняя
@@ -158,7 +179,17 @@ fun bestHighJump(jumps: String): Int {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val form = Regex("""^([0-9]+)(\s+(\+|-)\s+([0-9]+))*$""")
+    if (!expression.matches(form)) throw IllegalArgumentException("for input string \"$expression\"")
+    val x = expression.split(" ")
+    var result = x[0].toInt()
+    for (i in 1 until x.size step 2) {
+        if (x[i] == "-") result -= x[i + 1].toInt()
+        else result += x[i + 1].toInt()
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -169,7 +200,15 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val x = str.toLowerCase().split(" ")
+    val index = mutableListOf(0)
+    for (i in 0 until str.length)
+        if (str[i] == ' ') index.add(i + 1)
+    for (i in 0 until x.size - 1)
+        if (x[i] == x[i + 1]) return index[i]
+    return (-1)
+}
 
 /**
  * Сложная
@@ -185,19 +224,19 @@ fun firstDuplicateIndex(str: String): Int = TODO()
 fun mostExpensive(description: String): String {
     val b = description.split("; ")
     var m = 0.0
-    var cena = ""
+    var name = ""
     for (i in b) {
         val k = i.split(" ")
         try {
             if (k[1].toDouble() >= m) {
                 m = k[1].toDouble()
-                cena = k[0]
+                name = k[0]
             }
         } catch (e: IndexOutOfBoundsException) {
             return ""
         }
     }
-    return cena
+    return name
 }
 
 /**
@@ -211,7 +250,23 @@ fun mostExpensive(description: String): String {
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    val form = Regex("""[CDILMVX]+""")
+    val d = mapOf('I' to 1, 'V' to 5, 'X' to 10, 'L' to 50, 'C' to 100,
+            'D' to 500, 'M' to 1000)
+    var result = 0
+    var b = 0
+    if (!roman.matches(form)) return -1
+    for (i in roman.length - 1 downTo 0){
+        if (d[roman[i]]!! < b)
+            result -= d[roman[i]]!!
+        else {
+            b = d[roman[i]]!!
+            result += b
+        }
+    }
+    return result
+}
 
 /**
  * Очень сложная
