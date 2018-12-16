@@ -74,15 +74,15 @@ fun main(args: Array<String>) {
  * входными данными.
  */
 fun dateStrToDigit(str: String): String {
-    val format = Regex("""^([0-9]{1,2})\s([а-я]+)\s([0-9]+)$""")
-    if (!str.matches(format)) return ""
     val date = str.split(" ")
-    val mnf = arrayOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
-            "августа", "сентября", "октября", "ноября", "декабря")
-    val res = listOf(date[0].toInt(), mnf.indexOf(date[1]) + 1, date[2])
-    val maxMnf = daysInMonth(mnf.indexOf(date[1]) + 1, date[2].toInt())
-    if ((res[0] == maxMnf) || (res[1] != mnf)) return ""
-    return String.format("%02d.%02d.%d", res[0], res[1], res[2])
+    val mnf = mapOf("января" to 1, "февраля" to 2, "марта" to 3, "апреля" to 4, "мая" to 5, "июня" to 6,
+            "июля" to 7, "августа" to 8, "сентября" to 9, "октября" to 10, "ноября" to 11, "декабря" to 12)
+    if (date.size != 3) return ""
+    val d = date[0].toIntOrNull()
+    val m = mnf[date[1]] ?: 0
+    val y = date[2].toIntOrNull() ?: 0
+    if (d !in 1..daysInMonth(m, y) || m == 0 || d == 0) return ""
+    return String.format("%02d.%02d.%d", d, m, y)
 }
 
 /**
@@ -101,7 +101,8 @@ fun dateDigitToStr(digital: String): String {
     val parts = digital.split(".")
     val months = arrayOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
             "августа", "сентября", "октября", "ноября", "декабря")
-    if (parts[0].toInt() > 31 || parts[1].toInt() !in 1..12) return "" // некоррекное число || месяц
+    val maxMnf = daysInMonth(months.indexOf(parts[1]) + 1, parts[2].toInt())
+    if (parts[0].toInt() > maxMnf || parts[1].toInt() !in 1..12) return "" // некоррекное число || месяц
     val res = listOf(parts[0].toInt().toString(), months[parts[1].toInt() - 1], parts[2])
     return res.joinToString(separator = " ")
 }
@@ -118,15 +119,14 @@ fun dateDigitToStr(digital: String): String {
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String {
-    return try {
-        if (phone.all { it in "+-()1234567890 " })
-            phone.filter { it in "+1234567890" }
-        else throw NumberFormatException("Description")
-    } catch (e: NumberFormatException) {
-        ""
-    }
-}
+fun flattenPhoneNumber(phone: String): String =
+        try {
+            if (phone.all { it in "+-()1234567890 " })
+                phone.filter { it in "+1234567890" }
+            else throw NumberFormatException("Description")
+        } catch (e: NumberFormatException) {
+            ""
+        }
 
 /**
  * Средняя
@@ -222,14 +222,14 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше либо равны нуля.
  */
 fun mostExpensive(description: String): String {
-    val b = description.split("; ")
-    var m = 0.0
+    val razdel = description.split("; ")
+    var price = 0.0
     var name = ""
-    for (i in b) {
+    for (i in razdel) {
         val k = i.split(" ")
         try {
-            if (k[1].toDouble() >= m) {
-                m = k[1].toDouble()
+            if (k[1].toDouble() >= price) {
+                price = k[1].toDouble()
                 name = k[0]
             }
         } catch (e: IndexOutOfBoundsException) {
@@ -257,7 +257,7 @@ fun fromRoman(roman: String): Int {
     var result = 0
     var b = 0
     if (!roman.matches(form)) return -1
-    for (i in roman.length - 1 downTo 0){
+    for (i in roman.length - 1 downTo 0) {
         if (d[roman[i]]!! < b)
             result -= d[roman[i]]!!
         else {
