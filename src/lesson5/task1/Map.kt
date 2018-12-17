@@ -2,8 +2,10 @@
 
 package lesson5.task1
 
+import kotlinx.html.A
 import kotlinx.html.ButtonFormMethod
 import kotlinx.html.P
+import lesson8.task1.findNearestCirclePair
 
 /**
  * Пример
@@ -114,8 +116,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> =
         grades.entries.map { it.key }.groupBy { grades[it]!! }.mapValues { (_, grade) ->
             grade.sortedDescending()
-        }.toSortedMap(compareBy { -it } )
-
+        }.toSortedMap(compareBy { -it })
 
 
 /**
@@ -195,7 +196,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
     val ruka = mutableMapOf<String, Set<String>>()
     friends.forEach { key, value ->
         if (key !in ruka)
-            ruka[key] = topHandStyle    (key, friends).toSortedSet()
+            ruka[key] = topHandStyle(key, friends).toSortedSet()
         value.forEach {
             if (it !in ruka)
                 ruka[it] = topHandStyle(it, friends).toSortedSet()
@@ -204,6 +205,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
 
     return ruka
 }
+
 fun <E> topHandStyle(start: E, graph: Map<E, Set<E>>): Set<E> {
     val c = mutableMapOf(start to true)
     val s = mutableSetOf(start)
@@ -240,7 +242,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) = a.keys.r
  *
  * Для двух списков людей найти людей, встречающихся в обоих списках
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = (a.toMutableSet().intersect(b.toMutableSet())).toList()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = (a.intersect(b.toMutableSet())).toList()
 
 /**
  * Средняя
