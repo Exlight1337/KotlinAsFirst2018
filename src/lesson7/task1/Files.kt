@@ -59,16 +59,16 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     val mas = mutableMapOf<String, Int>()
     for (i in 0 until substrings.size) {
         if (substrings[i] !in mas.keys) {
-            var x = -1
-            var y = 0
-            var z = 0
-            while (y < file.length) {
-                x = file.indexOf(substrings[i].toLowerCase(), x + 1)
-                if (x == -1) break
-                z++
-                y = x + 1
+            var reg = -1
+            var lenght = 0
+            var sum = 0
+            while (lenght < file.length) {
+                reg = file.indexOf(substrings[i].toLowerCase(), reg + 1)
+                if (reg == -1) break
+                sum++
+                lenght = reg + 1
             }
-            mas[substrings[i]] = z
+            mas[substrings[i]] = sum
         }
     }
     return mas
@@ -122,15 +122,13 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    File(outputName).bufferedWriter().use {
-        var ravn = 0
-        for (line in File(inputName).readLines()) ravn = maxOf(ravn, line.trim().length)
-        for (line in File(inputName).readLines()) {
-            for (i in 1..(ravn - line.trim().length) / 2) it.write(" ")
-            it.write(line.trim())
-            it.newLine()
-        }
-    }
+    val line = File(inputName).readLines().map { it.trim() }
+    val max = line.map { it.length }.max() ?: 0
+    File(outputName).writeText(
+            line.joinToString("\n") {
+                " ".repeat((max - it.length) / 2) + it
+            }
+    )
 }
 
 /**

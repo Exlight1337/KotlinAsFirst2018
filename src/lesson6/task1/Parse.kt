@@ -96,14 +96,18 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    val format = Regex("""^([0-9]{2}).([0-9]{2}).([0-9]+)$""")
-    if (!digital.matches(format)) return ""
+    val MapaMonths = mapOf("01" to "января", "02" to "февраля", "03" to "марта",
+            "04" to "апреля", "05" to "мая", "06" to "июня", "07" to "июля", "08" to "августа", "09" to "сентября",
+            "10" to "октября", "11" to "ноября", "12" to "декабря")
     val parts = digital.split(".")
-    val months = arrayOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
-            "августа", "сентября", "октября", "ноября", "декабря")
-    if (parts[0].toInt() > daysInMonth(months.indexOf(parts[1]) + 1, parts[2].toInt()) || parts[0].toInt() == 0 || parts[1].toInt() !in 1..12) return ""
-    val res = listOf(parts[0].toInt().toString(), months[parts[1].toInt() - 1], parts[2])
-    return res.joinToString(separator = " ")
+    if (parts.size != 3) return ""
+    val days = parts[0].toIntOrNull()
+    val months = MapaMonths[parts[1]]
+    val months12 = parts[1].toIntOrNull()
+    val year = parts[2].toIntOrNull()
+    return if (days != null && months != null && year != null && days in 1..daysInMonth(months12!!, year))
+        String.format("%d $months %d", days, year)
+    else ""
 }
 
 /**
