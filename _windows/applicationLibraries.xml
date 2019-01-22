@@ -1,0 +1,18 @@
+<application>
+  <component name="libraryTable">
+    <library name="KotlinAsFirst2018">
+      <CLASSES />
+      <JAVADOC />
+      <SOURCES>
+        <root url="file://$USER_HOME$/IdeaProjects/KotlinAsFirst2018" />
+      </SOURCES>
+    </library>
+    <library name="KotlinAsFirst20181" type="kotlin.js">
+      <CLASSES />
+      <JAVADOC />
+      <SOURCES>
+        <root url="file://$USER_HOME$/IdeaProjects/KotlinAsFirst2018" />
+      </SOURCES>
+    </library>
+  </component>
+</application>
